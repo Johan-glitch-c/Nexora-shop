@@ -1,4 +1,4 @@
-from ..schemas.category import  CategoryCreateSchema
+from ..schemas.category import  CategoryCreateSchema, CategoryResponseSchema, CategoryUpdateSchema
 from sqlalchemy.orm import Session
 from ..models.category import Category
 from typing import Optional, List
@@ -26,3 +26,21 @@ class CategoryRepository:
         self.db.commit()
         self.db.refresh(db_category)
         return db_category
+
+    def update(self, category_id: int, category_data: CategoryUpdateSchema) -> Optional[Category]:
+        existing_category = self.db.query(Category).filter(Category.id==category_id).first()
+        if not existing_category:
+            return None
+        existing_category.name = category_data.name
+        existing_category.slug = category_data.slug
+        self.db.commit()
+        self.db.refresh(existing_category)
+        return existing_category
+
+    def delete(self,category_id: int) ->Optional[Category]:
+        existing_category = self.db.query(Category).filter(Category.id==category_id).first()
+        if not existing_category:
+            return None
+        self.db.delete(existing_category)
+        self.db.commit()
+        return True
