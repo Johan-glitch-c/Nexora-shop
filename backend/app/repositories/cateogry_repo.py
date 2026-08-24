@@ -1,4 +1,4 @@
-from ..schemas.category import  CategoryCreateSchema, CategoryResponseSchema, CategoryUpdateSchema
+from ..schemas.category import  CategoryCreateSchema, CategoryUpdateSchema
 from sqlalchemy.orm import Session
 from ..models.category import Category
 from typing import Optional, List
