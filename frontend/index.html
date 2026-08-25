@@ -1,10 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora — Modern Tech Store</title>
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-$END$
+
+<header class="header">
+    <div class="container header-inner">
+
+        <a href="index.html" class="logo">
+            NEXORA
+        </a>
+
+        <nav class="nav">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="catalog.html" class="nav-link">Catalog</a>
+        </nav>
+
+        <div class="header-actions">
+            <button class="icon-btn" aria-label="Search">
+                🔍
+            </button>
+
+            <a href="#" class="cart-btn">
+                Cart
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+
+<main>
+
+    <section class="hero">
+        <div class="container hero-grid">
+
+            <div class="hero-content">
+                <span class="hero-label">NEXT GENERATION TECH</span>
+
+                <h1>
+                    Technology that
+                    <span>moves you forward.</span>
+                </h1>
+
+                <p>
+                    Discover premium electronics, smart accessories
+                    and modern gadgets designed for everyday life.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="catalog.html" class="btn btn-primary">
+                        Explore products
+                    </a>
+
+                    <a href="#categories" class="btn btn-secondary">
+                        View categories
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <span class="hero-card-label">FEATURED</span>
+
+                    <div class="hero-product-image">
+                        <span>TECH</span>
+                    </div>
+
+                    <div class="hero-product-info">
+                        <span>Premium Collection</span>
+                        <strong>Nexora Edition</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="categories section" id="categories">
+        <div class="container">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">EXPLORE</span>
+                    <h2>Shop by category</h2>
+                </div>
+
+                <a href="catalog.html" class="section-link">
+                    View all →
+                </a>
+            </div>
+
+            <div class="categories-grid" id="categories-list">
+                <div class="loading">Loading categories...</div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="products section">
+        <div class="container">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">TRENDING</span>
+                    <h2>Popular products</h2>
+                </div>
+
+                <a href="catalog.html" class="section-link">
+                    View all →
+                </a>
+            </div>
+
+            <div class="products-grid" id="products-list">
+                <div class="loading">Loading products...</div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="promo section">
+        <div class="container">
+
+            <div class="promo-card">
+                <div>
+                    <span class="section-label">NEXORA COLLECTION</span>
+
+                    <h2>
+                        Better technology.
+                        Better everyday life.
+                    </h2>
+
+                    <p>
+                        Carefully selected products with a focus
+                        on quality, design and performance.
+                    </p>
+
+                    <a href="catalog.html" class="btn btn-primary">
+                        Shop now
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    <div class="container footer-inner">
+
+        <div>
+            <a href="index.html" class="logo">NEXORA</a>
+            <p>Modern technology for modern life.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="catalog.html">Catalog</a>
+        </div>
+
+    </div>
+</footer>
+
+
+<script src="js/api.js"></script>
+<script src="js/home.js"></script>
+
 </body>
 </html>

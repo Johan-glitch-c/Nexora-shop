@@ -1,10 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nexora — Product</title>
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-$END$
+
+<header class="header">
+
+    <div class="container header-inner">
+
+        <a href="index.html" class="logo">
+            NEXORA
+        </a>
+
+        <nav class="nav">
+            <a href="index.html" class="nav-link">
+                Home
+            </a>
+
+            <a href="catalog.html" class="nav-link active">
+                Catalog
+            </a>
+        </nav>
+
+        <div class="header-actions">
+
+            <button class="icon-btn">
+                🔍
+            </button>
+
+            <a href="#" class="cart-btn">
+                Cart
+                <span class="cart-count">0</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="product-page section">
+
+        <div class="container">
+
+            <a
+                href="catalog.html"
+                class="back-link"
+            >
+                ← Back to catalog
+            </a>
+
+
+            <div
+                class="product-detail"
+                id="product-detail"
+            >
+
+                <div class="loading">
+                    Loading product...
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+
+            <a href="index.html" class="logo">
+                NEXORA
+            </a>
+
+            <p>
+                Modern technology for modern life.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="catalog.html">
+                Catalog
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script src="js/api.js"></script>
+<script src="js/product.js"></script>
+
 </body>
+
 </html>

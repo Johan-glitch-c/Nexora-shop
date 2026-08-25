@@ -1,10 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nexora — Catalog</title>
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-$END$
+
+<header class="header">
+    <div class="container header-inner">
+
+        <a href="index.html" class="logo">
+            NEXORA
+        </a>
+
+        <nav class="nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="catalog.html" class="nav-link active">Catalog</a>
+        </nav>
+
+        <div class="header-actions">
+            <button class="icon-btn">
+                🔍
+            </button>
+
+            <a href="#" class="cart-btn">
+                Cart
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+
+<main>
+
+    <section class="catalog-header">
+        <div class="container">
+
+            <span class="section-label">NEXORA STORE</span>
+
+            <h1>Explore our catalog</h1>
+
+            <p>
+                Find the technology you need for work,
+                entertainment and everyday life.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section class="catalog section">
+        <div class="container catalog-layout">
+
+            <aside class="filters">
+
+                <div class="filter-header">
+                    <h3>Categories</h3>
+                </div>
+
+                <div id="category-filters">
+                    <button class="filter-btn active" data-category="all">
+                        All products
+                    </button>
+
+                    <div class="loading">
+                        Loading...
+                    </div>
+                </div>
+
+            </aside>
+
+
+            <div class="catalog-content">
+
+                <div class="catalog-toolbar">
+
+                    <div>
+                        <span id="products-count">
+                            0 products
+                        </span>
+                    </div>
+
+                    <select id="sort-products">
+                        <option value="default">
+                            Sort by
+                        </option>
+
+                        <option value="price-asc">
+                            Price: low to high
+                        </option>
+
+                        <option value="price-desc">
+                            Price: high to low
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div
+                    class="products-grid"
+                    id="catalog-products"
+                >
+                    <div class="loading">
+                        Loading products...
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    <div class="container footer-inner">
+
+        <div>
+            <a href="index.html" class="logo">
+                NEXORA
+            </a>
+
+            <p>
+                Modern technology for modern life.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="catalog.html">Catalog</a>
+        </div>
+
+    </div>
+</footer>
+
+
+<script src="js/api.js"></script>
+<script src="js/catalog.js"></script>
+
 </body>
 </html>
