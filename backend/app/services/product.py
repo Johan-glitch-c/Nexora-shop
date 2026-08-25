@@ -13,7 +13,7 @@ class ProductService:
     def get_all_products(self)-> List[ProductResponseSchema]:
         products = self.product_repo.get_all()
         products_response=[ProductResponseSchema.model_validate(product) for product in products]
-        return ProductListResponseSchema(product=products_response, total=len(products_response))
+        return ProductListResponseSchema(products=products_response, total=len(products_response))
 
     def get_product_by_id(self, product_id: int) -> ProductResponseSchema:
         product = self.product_repo.get_by_id(product_id)
@@ -27,7 +27,7 @@ class ProductService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
         products = self.product_repo.get_by_category(category.id)
         products_response=[ProductResponseSchema.model_validate(product) for product in products]
-        return ProductListResponseSchema(product=products_response, total=len(products_response))
+        return ProductListResponseSchema(products=products_response, total=len(products_response))
 
     def create_product(self, product_data: ProductCreateSchema) -> ProductResponseSchema:
         category=self.category_repo.get_by_id(product_data.category_id)

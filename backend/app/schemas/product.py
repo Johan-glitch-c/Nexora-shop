@@ -27,7 +27,7 @@ class ProductResponseSchema(BaseModel):
         from_attributes = True
 
 class ProductListResponseSchema(BaseModel):
-    product: List[ProductResponseSchema]
+    products: List[ProductResponseSchema]
     total: int = Field(..., description="Total product count")
 
 

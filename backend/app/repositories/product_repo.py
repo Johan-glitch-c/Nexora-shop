@@ -26,7 +26,7 @@ class ProductRepository:
         return db_product
 
     def update(self,product_id: int, product_data: ProductUpdateSchema) -> Product:
-        existing_product = self.db.query.filter(Product.id == product_id).first()
+        existing_product = self.db.query(Product).filter(Product.id == product_id).first()
         if existing_product:
             existing_product.name = product_data.name
             existing_product.price = product_data.price
