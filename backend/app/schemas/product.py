@@ -29,3 +29,11 @@ class ProductResponseSchema(BaseModel):
 class ProductListResponseSchema(BaseModel):
     product: List[ProductResponseSchema]
     total: int = Field(..., description="Total product count")
+
+
+class ProductUpdateSchema(BaseModel):
+    name: str = Field(...,min_length=5,max_length=200,description="Product name")
+    description: Optional[str]= Field(None,description="Product description")
+    price: float = Field(...,gt=0,description="Product price (must be greater than 0)")
+    category_id: int = Field(...,description="Product category id")
+    image_url: Optional[str]= Field(None,description="Product image url")

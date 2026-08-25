@@ -1,4 +1,4 @@
-from ..schemas.product import ProductCreateSchema
+from ..schemas.product import ProductCreateSchema, ProductUpdateSchema
 from ..models import Product
 from typing import List, Optional
 from sqlalchemy.orm import joinedload, Session
@@ -25,5 +25,23 @@ class ProductRepository:
         self.db.refresh(db_product)
         return db_product
 
-    def get_mupltipale_by_id(self, category_id: int) -> List[Product]:
-        return self.db.query(Product).options(joinedload(Product.category)).filter(Product.category_id==category_id).all()
+    def update(self,product_id: int, product_data: ProductUpdateSchema) -> Product:
+        existing_product = self.db.query.filter(Product.id == product_id).first()
+        if existing_product:
+            existing_product.name = product_data.name
+            existing_product.price = product_data.price
+            existing_product.category_id = product_data.category_id
+            existing_product.image_url = product_data.image_url
+            existing_product.description = product_data.description
+            self.db.commit()
+            self.db.refresh(existing_product)
+            return existing_product
+        raise Exception ("Product not found.")
+
+    def delete(self, product_id: int) -> Optional[bool]:
+        existing_product = self.db.query(Product).filter(Product.id == product_id).first()
+        if not existing_product:
+            return None
+        self.db.delete(existing_product)
+        self.db.commit()
+        return True
