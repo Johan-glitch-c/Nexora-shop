@@ -172,15 +172,26 @@ function renderProduct(
 
 
     document
-        .getElementById("add-to-cart")
-        .addEventListener(
-            "click",
-            () => {
-                alert(
-                    `${product.name} added to cart`
+    .getElementById("add-to-cart")
+    .addEventListener(
+        "click",
+        () => {
+
+            addToCart(product);
+
+            const button =
+                document.getElementById(
+                    "add-to-cart"
                 );
-            }
-        );
+
+            button.textContent = "Added to cart";
+
+            setTimeout(() => {
+                button.textContent =
+                    "Add to cart";
+            }, 1500);
+        }
+    );
 }
 
 
