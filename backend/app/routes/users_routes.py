@@ -26,10 +26,10 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.login_user(user_data)
 
-@router.get("username/{username}", response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
-def get_user_by_username(user_username: str, db: Session = Depends(get_db)):
+@router.get("/username/{username}", response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
+def get_user_by_username(username: str, db: Session = Depends(get_db)):
     service = UserService(db)
-    return service.get_user_by_username(user_username)
+    return service.get_user_by_username(username)
 
 @router.get("/{user_id}", response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
