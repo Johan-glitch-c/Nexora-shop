@@ -1,9 +1,11 @@
 from fastapi import APIRouter, status, Depends
+from ..models.user import User
 from ..services.user import UserService
 from ..schemas.user import UserLoginSchema, UserResponseSchema, UserCreateSchema, TokenResponseSchema
 from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
+from ..security.auth import get_current_user
 
 
 router = APIRouter(
@@ -25,6 +27,10 @@ def create_user(user_data: UserCreateSchema, db: Session = Depends(get_db)):
 def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.login_user(user_data)
+
+@router.get("/me",response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
+def get_current(current_user: User = Depends(get_current_user)):
+    return current_user
 
 @router.get("/username/{username}", response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
 def get_user_by_username(username: str, db: Session = Depends(get_db)):
