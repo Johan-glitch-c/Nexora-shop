@@ -8,7 +8,7 @@ class Cart(Base):
     __tablename__ = "carts"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("user.id"), unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     cart_items = relationship("CartItem", back_populates="cart", cascade="all, delete-orphan")
     user=relationship("User", back_populates="cart")
