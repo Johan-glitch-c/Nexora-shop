@@ -10,4 +10,4 @@ class User(Base):
     email = Column(String, unique=True)
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
-    # orders=relationship("Order", back_populates="user")
+    cart=relationship("Cart", back_populates="user", uselist=False)
