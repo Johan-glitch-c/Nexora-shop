@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
 from ..services.user import UserService
-from ..schemas.user import UserLoginSchema, UserResponseSchema, UserCreateSchema
+from ..schemas.user import UserLoginSchema, UserResponseSchema, UserCreateSchema, TokenResponseSchema
 from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
@@ -21,7 +21,7 @@ def create_user(user_data: UserCreateSchema, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.create_user(user_data)
 
-@router.post("/login",response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
+@router.post("/login",response_model=TokenResponseSchema, status_code=status.HTTP_200_OK)
 def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.login_user(user_data)

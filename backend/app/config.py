@@ -1,10 +1,15 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     app_name: str = "Nexora Shop"
     debug: bool = True
     database_url: str = "sqlite:///Nexora.db"
+
+    secret_key: str
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
+
     cors_origins: list[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
@@ -17,7 +22,10 @@ class Settings(BaseSettings):
     static_url: str = "/static"
     images_dir: str = "/static/images"
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(
+        env_file="..env",
+        env_file_encoding="utf-8",
+    )
+
 
 settings = Settings()

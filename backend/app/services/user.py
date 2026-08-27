@@ -1,10 +1,10 @@
 from fastapi import HTTPException, status
 from ..repositories.user_repo import UserRepository
-from ..schemas.user import UserCreateSchema, UserResponseSchema, UserLoginSchema
+from ..schemas.user import UserCreateSchema, UserResponseSchema, UserLoginSchema, TokenResponseSchema
 from typing import List
 from sqlalchemy.orm import Session
 from ..security.password import hash_password, verify_password
-
+from ..security.jwt import create_access_token
 
 class UserService:
     def __init__(self, db: Session):
@@ -43,11 +43,15 @@ class UserService:
         new_user = self.service.create(username=user_data.username, email=user_data.email,password_hash=password_hash)
         return UserResponseSchema.model_validate(new_user)
 
-    def login_user(self, user_data: UserLoginSchema) -> UserResponseSchema:
+    def login_user(self, user_data: UserLoginSchema) -> TokenResponseSchema:
         user_exist= self.service.get_by_username(user_data.username)
         if not user_exist:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Username or password is incorrect")
         password=verify_password(user_data.password, user_exist.password_hash)
         if not password:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
-        return UserResponseSchema.model_validate(user_exist)
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Username or password is incorrect")
+
+        access_token = create_access_token({
+            "sub": str(user_exist.id)
+        })
+        return TokenResponseSchema(access_token=access_token, token_type="bearer")

@@ -17,3 +17,7 @@ class UserResponseSchema(BaseModel):
     created_at: datetime = Field(..., description="User's created at")
     class Config:
         from_attributes = True
+
+class TokenResponseSchema(BaseModel):
+    access_token: str = Field(..., description="User's access token")
+    token_type: str = Field(..., description="User's token type")
