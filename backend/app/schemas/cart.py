@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 
 class CartItemCreateSchema(BaseModel):
@@ -16,8 +16,9 @@ class CartItemResponseSchema(BaseModel):
     product_id: int = Field(..., description=" Cart Item id")
     quantity: int = Field(..., ge=1, description="Quantity of the cart item")
 
-    class Config:
+    model_config=ConfigDict(
         from_attributes=True
+    )
 
 class CartResponseSchema(BaseModel):
     id: int
@@ -25,3 +26,5 @@ class CartResponseSchema(BaseModel):
     created_at: datetime
     items: List[CartItemResponseSchema]
 
+    model_config=ConfigDict(
+        from_attributes=True)
