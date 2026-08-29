@@ -53,3 +53,10 @@ class CartRepository:
         self.db.query(CartItem).filter(CartItem.cart_id == cart_id).delete()
         self.db.commit()
         return True
+
+    def increment_quantity(self, item: CartItem, quantity: int) -> CartItem:
+
+        item.quantity+=+quantity
+        self.db.commit()
+        self.db.refresh(item)
+        return item
