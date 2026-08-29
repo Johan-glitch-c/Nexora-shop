@@ -9,7 +9,7 @@ from .database import init_db
 from .routes.category_routes import router as category_router
 from .routes.product_routes import router as product_router
 from .routes.users_routes import router as users_router
-
+from .routes.cart_routes import router as cart_router
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +41,7 @@ app.mount(
 app.include_router(category_router)
 app.include_router(product_router)
 app.include_router(users_router)
+app.include_router(cart_router)
 
 
 @app.on_event("startup")
