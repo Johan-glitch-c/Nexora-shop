@@ -17,22 +17,40 @@
         </a>
 
         <nav class="nav">
-            <a href="index.html" class="nav-link active">Home</a>
-            <a href="catalog.html" class="nav-link">Catalog</a>
+            <a href="index.html" class="nav-link active">
+                Home
+            </a>
+
+            <a href="catalog.html" class="nav-link">
+                Catalog
+            </a>
         </nav>
 
         <div class="header-actions">
-            <button class="icon-btn" aria-label="Search">
+
+            <button
+                class="icon-btn"
+                aria-label="Search"
+            >
                 🔍
             </button>
 
             <a
-    href="cart.html"
-    class="cart-btn"
->
-    Cart
-    <span class="cart-count">0</span>
-</a>
+                href="login.html"
+                class="cart-btn"
+                id="auth-link"
+            >
+                Login
+            </a>
+
+            <a
+                href="cart.html"
+                class="cart-btn"
+            >
+                Cart
+                <span class="cart-count">0</span>
+            </a>
+
         </div>
 
     </div>
@@ -177,7 +195,9 @@
 </footer>
 
 
+<script src="js/auth.js"></script>
 <script src="js/api.js"></script>
+<script src="js/header.js"></script>
 <script src="js/home.js"></script>
 
 </body>
