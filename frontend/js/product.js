@@ -172,26 +172,68 @@ function renderProduct(
 
 
     document
-    .getElementById("add-to-cart")
-    .addEventListener(
-        "click",
-        () => {
+        .getElementById("add-to-cart")
+        .addEventListener(
+            "click",
+            () => addProductToCart(product)
+        );
+}
 
-            addToCart(product);
 
-            const button =
-                document.getElementById(
-                    "add-to-cart"
-                );
+async function addProductToCart(product) {
 
-            button.textContent = "Added to cart";
+    if (!isAuthenticated()) {
 
-            setTimeout(() => {
-                button.textContent =
-                    "Add to cart";
-            }, 1500);
-        }
-    );
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "add-to-cart"
+        );
+
+
+    try {
+
+        button.disabled = true;
+
+        button.textContent =
+            "Adding...";
+
+
+        await addCartItem(
+            product.id,
+            1
+        );
+
+
+        button.textContent =
+            "Added to cart";
+
+
+        setTimeout(() => {
+
+            button.textContent =
+                "Add to cart";
+
+            button.disabled = false;
+
+        }, 1500);
+
+
+    } catch (error) {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Add to cart";
+
+        alert(error.message);
+    }
 }
 
 
