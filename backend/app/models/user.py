@@ -11,3 +11,4 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     cart=relationship("Cart", back_populates="user", uselist=False)
+    orders = relationship("Order", back_populates="user")
