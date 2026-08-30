@@ -16,6 +16,7 @@ class Product(Base):
     image_url= Column(String)
     category = relationship("Category", back_populates="products")
     cart_item=relationship("CartItem", back_populates="product")
-    order_item=relationship("OrderItem", back_populates="product")
+    order_items=relationship("OrderItem", back_populates="product")
+
     def __repr__(self):
         return f"<Product (id: {self.id}, name: '{self.name}')>"
