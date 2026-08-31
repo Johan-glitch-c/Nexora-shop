@@ -1,7 +1,9 @@
 from typing import List, Optional
+
+from models import Order
 from ..models.order import Order
 from ..models.order_item import OrderItem
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 class OrderRepository:
 
@@ -13,7 +15,7 @@ class OrderRepository:
         return self.db.query(Order).all()
 
     def get_by_id(self, order_id: int) -> Optional[Order]:
-        return self.db.query(Order).filter(Order.id == order_id).first()
+        return self.db.query(Order).options(joinedload(Order.items)).filter(Order.id == order_id).first()
 
     def get_by_user_id(self, user_id: int) ->List[Order]:
         return self.db.query(Order).filter(Order.user_id == user_id).all()
