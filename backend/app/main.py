@@ -10,6 +10,7 @@ from .routes.category_routes import router as category_router
 from .routes.product_routes import router as product_router
 from .routes.users_routes import router as users_router
 from .routes.cart_routes import router as cart_router
+from .routes.order_routes import router as order_router
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +43,7 @@ app.include_router(category_router)
 app.include_router(product_router)
 app.include_router(users_router)
 app.include_router(cart_router)
+app.include_router(order_router)
 
 
 @app.on_event("startup")

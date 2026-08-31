@@ -1,6 +1,4 @@
 from typing import List, Optional
-
-from models import Order
 from ..models.order import Order
 from ..models.order_item import OrderItem
 from sqlalchemy.orm import Session, joinedload
