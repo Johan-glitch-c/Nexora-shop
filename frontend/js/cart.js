@@ -1,373 +1,5 @@
 document.addEventListener(
     "DOMContentLoaded",
-    renderCart
-);
-
-
-function renderCart() {
-
-    const itemsContainer =
-        document.getElementById(
-            "cart-items"
-        );
-
-    const summaryContainer =
-        document.getElementById(
-            "cart-summary"
-        );
-
-
-    const cart = getCart();
-
-
-    if (!cart.length) {
-
-        itemsContainer.innerHTML = `
-            <div class="empty-cart">
-
-                <div class="empty-cart-icon">
-                    🛒
-                </div>
-
-                <h2>
-                    Your cart is empty
-                </h2>
-
-                <p>
-                    Add some products to get started.
-                </p>
-
-                <a
-                    href="catalog.html"
-                    class="btn btn-primary"
-                >
-                    Browse products
-                </a>
-
-            </div>
-        `;
-
-        summaryContainer.innerHTML = "";
-
-        return;
-    }
-
-
-    itemsContainer.innerHTML =
-        cart
-            .map(renderCartItem)
-            .join("");
-
-
-    const total =
-        getCartTotal();
-
-
-    summaryContainer.innerHTML = `
-        <div class="summary-card">
-
-            <span class="section-label">
-                ORDER SUMMARY
-            </span>
-
-            <h2>
-                Summary
-            </h2>
-
-
-            <div class="summary-row">
-
-                <span>
-                    Products
-                </span>
-
-                <span>
-                    ${cart.length}
-                </span>
-
-            </div>
-
-
-            <div class="summary-row">
-
-                <span>
-                    Total
-                </span>
-
-                <strong>
-                    $${total.toFixed(2)}
-                </strong>
-
-            </div>
-
-
-            <button
-                class="btn btn-primary checkout-btn"
-                id="checkout-button"
-            >
-                Checkout
-            </button>
-
-
-            <button
-                class="clear-cart"
-                id="clear-cart"
-            >
-                Clear cart
-            </button>
-
-        </div>
-    `;
-
-
-    attachCartEvents();
-}
-
-
-function renderCartItem(product) {
-
-    const imageUrl =
-        product.image_url
-            ? `${API_BASE_URL}${product.image_url}`
-            : null;
-
-
-    const image =
-        imageUrl
-            ? `
-                <img
-                    src="${imageUrl}"
-                    alt="${escapeHtml(
-                        product.name
-                    )}"
-                >
-            `
-            : `
-                <div class="cart-placeholder">
-                    N
-                </div>
-            `;
-
-
-    return `
-        <article
-            class="cart-item"
-            data-id="${product.id}"
-        >
-
-            <div class="cart-item-image">
-                ${image}
-            </div>
-
-
-            <div class="cart-item-info">
-
-                <span class="product-category">
-                    Product #${product.id}
-                </span>
-
-                <h3>
-                    ${escapeHtml(
-                        product.name
-                    )}
-                </h3>
-
-                <strong class="cart-item-price">
-                    $${product.price.toFixed(2)}
-                </strong>
-
-            </div>
-
-
-            <div class="quantity-control">
-
-                <button
-                    class="quantity-btn decrease"
-                    data-id="${product.id}"
-                >
-                    −
-                </button>
-
-                <span>
-                    ${product.quantity}
-                </span>
-
-                <button
-                    class="quantity-btn increase"
-                    data-id="${product.id}"
-                >
-                    +
-                </button>
-
-            </div>
-
-
-            <div class="cart-item-total">
-                $${(
-                    product.price *
-                    product.quantity
-                ).toFixed(2)}
-            </div>
-
-
-            <button
-                class="remove-btn"
-                data-id="${product.id}"
-            >
-                Remove
-            </button>
-
-        </article>
-    `;
-}
-
-
-function attachCartEvents() {
-
-    document
-        .querySelectorAll(".increase")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-                    const product =
-                        getCart().find(
-                            item =>
-                                item.id === id
-                        );
-
-                    if (!product) {
-                        return;
-                    }
-
-                    updateQuantity(
-                        id,
-                        product.quantity + 1
-                    );
-
-                    renderCart();
-                }
-            );
-        });
-
-
-    document
-        .querySelectorAll(".decrease")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-                    const product =
-                        getCart().find(
-                            item =>
-                                item.id === id
-                        );
-
-                    if (!product) {
-                        return;
-                    }
-
-                    updateQuantity(
-                        id,
-                        product.quantity - 1
-                    );
-
-                    renderCart();
-                }
-            );
-        });
-
-
-    document
-        .querySelectorAll(".remove-btn")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-                    removeFromCart(id);
-
-                    renderCart();
-                }
-            );
-        });
-
-
-    const clearButton =
-        document.getElementById(
-            "clear-cart"
-        );
-
-
-    if (clearButton) {
-
-        clearButton.addEventListener(
-            "click",
-            () => {
-
-                clearCart();
-
-                renderCart();
-            }
-        );
-
-    }
-
-
-    const checkoutButton =
-        document.getElementById(
-            "checkout-button"
-        );
-
-
-    if (checkoutButton) {
-
-        checkoutButton.addEventListener(
-            "click",
-            () => {
-
-                alert(
-                    "Checkout will be available soon."
-                );
-            }
-        );
-
-    }
-}
-
-
-function escapeHtml(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-document.addEventListener(
-    "DOMContentLoaded",
     loadCart
 );
 
@@ -416,7 +48,8 @@ async function loadCart() {
 
     try {
 
-        const cart = await getCart();
+        const cart =
+            await getCart();
 
 
         if (!cart.items || !cart.items.length) {
@@ -427,7 +60,7 @@ async function loadCart() {
         }
 
 
-        const products =
+        const items =
             await Promise.all(
                 cart.items.map(
                     async item => {
@@ -438,8 +71,9 @@ async function loadCart() {
                             );
 
                         return {
-                            ...item,
-                            product,
+                            id: item.id,
+                            quantity: item.quantity,
+                            product: product,
                         };
                     }
                 )
@@ -447,12 +81,17 @@ async function loadCart() {
 
 
         renderCart(
-            products,
-            cart
+            items
         );
 
 
     } catch (error) {
+
+        console.error(
+            "Failed to load cart:",
+            error
+        );
+
 
         itemsContainer.innerHTML = `
             <div class="loading">
@@ -466,10 +105,8 @@ async function loadCart() {
     }
 }
 
-function renderCart(
-    items,
-    cart
-) {
+
+function renderCart(items) {
 
     const itemsContainer =
         document.getElementById(
@@ -484,13 +121,18 @@ function renderCart(
 
     itemsContainer.innerHTML =
         items
-            .map(renderCartItem)
+            .map(
+                renderCartItem
+            )
             .join("");
 
 
     const total =
         items.reduce(
-            (sum, item) => {
+            (
+                sum,
+                item
+            ) => {
 
                 return sum +
                     (
@@ -499,6 +141,21 @@ function renderCart(
                         ) *
                         item.quantity
                     );
+
+            },
+            0
+        );
+
+
+    const totalQuantity =
+        items.reduce(
+            (
+                sum,
+                item
+            ) => {
+
+                return sum +
+                    item.quantity;
 
             },
             0
@@ -516,17 +173,22 @@ function renderCart(
                 Summary
             </h2>
 
+
             <div class="summary-row">
+
                 <span>
                     Products
                 </span>
 
                 <span>
-                    ${items.length}
+                    ${totalQuantity}
                 </span>
+
             </div>
 
+
             <div class="summary-row">
+
                 <span>
                     Total
                 </span>
@@ -534,7 +196,9 @@ function renderCart(
                 <strong>
                     $${total.toFixed(2)}
                 </strong>
+
             </div>
+
 
             <button
                 class="btn btn-primary checkout-btn"
@@ -542,6 +206,7 @@ function renderCart(
             >
                 Checkout
             </button>
+
 
             <button
                 class="clear-cart"
@@ -554,8 +219,11 @@ function renderCart(
     `;
 
 
-    attachCartEvents();
+    attachCartEvents(
+        items
+    );
 }
+
 
 function renderCartItem(item) {
 
@@ -586,6 +254,11 @@ function renderCartItem(item) {
             `;
 
 
+    const itemTotal =
+        Number(product.price) *
+        item.quantity;
+
+
     return `
         <article
             class="cart-item"
@@ -603,16 +276,20 @@ function renderCartItem(item) {
                     Product #${product.id}
                 </span>
 
+
                 <h3>
                     ${escapeHtml(
                         product.name
                     )}
                 </h3>
 
+
                 <strong class="cart-item-price">
+
                     $${Number(
                         product.price
                     ).toFixed(2)}
+
                 </strong>
 
             </div>
@@ -628,9 +305,11 @@ function renderCartItem(item) {
                     −
                 </button>
 
+
                 <span>
                     ${item.quantity}
                 </span>
+
 
                 <button
                     class="quantity-btn increase"
@@ -645,10 +324,7 @@ function renderCartItem(item) {
 
             <div class="cart-item-total">
 
-                $${(
-                    Number(product.price) *
-                    item.quantity
-                ).toFixed(2)}
+                $${itemTotal.toFixed(2)}
 
             </div>
 
@@ -665,7 +341,7 @@ function renderCartItem(item) {
 }
 
 
-function attachCartEvents() {
+function attachCartEvents(items) {
 
     document
         .querySelectorAll(".increase")
@@ -680,6 +356,7 @@ function attachCartEvents() {
                             button.dataset.id
                         );
 
+
                     const currentQuantity =
                         Number(
                             button.dataset.quantity
@@ -692,6 +369,7 @@ function attachCartEvents() {
                             itemId,
                             currentQuantity + 1
                         );
+
 
                         await loadCart();
 
@@ -719,13 +397,16 @@ function attachCartEvents() {
                             button.dataset.id
                         );
 
+
                     const currentQuantity =
                         Number(
                             button.dataset.quantity
                         );
 
 
-                    if (currentQuantity <= 1) {
+                    if (
+                        currentQuantity <= 1
+                    ) {
 
                         return;
                     }
@@ -737,6 +418,7 @@ function attachCartEvents() {
                             itemId,
                             currentQuantity - 1
                         );
+
 
                         await loadCart();
 
@@ -770,6 +452,7 @@ function attachCartEvents() {
                         await deleteCartItem(
                             itemId
                         );
+
 
                         await loadCart();
 
@@ -825,10 +508,8 @@ function attachCartEvents() {
             "click",
             () => {
 
-                alert(
-                    "Checkout will be available soon."
-                );
-
+                window.location.href =
+                    "checkout.html";
             }
         );
     }
@@ -841,6 +522,7 @@ function renderEmptyCart() {
         document.getElementById(
             "cart-items"
         );
+
 
     const summaryContainer =
         document.getElementById(
@@ -884,6 +566,12 @@ function escapeHtml(value) {
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }

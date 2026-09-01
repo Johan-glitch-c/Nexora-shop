@@ -210,3 +210,33 @@ async function clearCart() {
         }
     );
 }
+
+// =========================
+// ORDERS
+// =========================
+
+async function createOrder(shippingAddress) {
+    return apiRequest(
+        "/api/orders/",
+        {
+            method: "POST",
+            body: JSON.stringify({
+                shipping_address: shippingAddress,
+            }),
+        }
+    );
+}
+
+
+async function getUserOrders() {
+    return apiRequest(
+        "/api/orders/"
+    );
+}
+
+
+async function getOrder(orderId) {
+    return apiRequest(
+        `/api/orders/${orderId}`
+    );
+}

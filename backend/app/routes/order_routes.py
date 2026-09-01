@@ -23,7 +23,7 @@ def get_user_orders(current_user: User = Depends(get_current_user), db: Session 
     service = OrderService(db)
     return service.get_user_orders(current_user)
 
-@router.get("{order_id}", response_model=OrderResponseSchema,status_code=status.HTTP_200_OK)
+@router.get("/{order_id}", response_model=OrderResponseSchema,status_code=status.HTTP_200_OK)
 def get_order(order_id: int, current_user: User = Depends(get_current_user) ,db: Session = Depends(get_db)):
     service = OrderService(db)
     return service.get_order_by_id(order_id, current_user)

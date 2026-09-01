@@ -1625,3 +1625,95 @@ select {
     }
 
 }
+
+/* CHECKOUT */
+
+.checkout-page {
+    min-height: calc(100vh - 78px);
+
+    padding-top: 90px;
+}
+
+
+.checkout-card {
+    width: min(
+        100%,
+        650px
+    );
+
+    margin: 0 auto;
+
+    padding: 40px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-lg);
+
+    background: var(--surface);
+}
+
+
+.checkout-card h1 {
+    margin-top: 5px;
+
+    font-size: clamp(
+        38px,
+        6vw,
+        58px
+    );
+
+    line-height: 1;
+
+    letter-spacing: -0.05em;
+}
+
+
+.checkout-subtitle {
+    margin-top: 12px;
+
+    color: var(--muted);
+}
+
+
+.checkout-card form {
+    margin-top: 35px;
+}
+
+
+.form-group textarea {
+    width: 100%;
+
+    padding: 14px;
+
+    resize: vertical;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: var(--surface-light);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    line-height: 1.5;
+}
+
+
+.form-group textarea:focus {
+    border-color: var(--accent);
+}
+
+
+.checkout-submit {
+    width: 100%;
+
+    margin-top: 10px;
+
+    border: 0;
+
+    cursor: pointer;
+}

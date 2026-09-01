@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nexora — Checkout</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+<header class="header">
+
+    <div class="container header-inner">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            NEXORA
+        </a>
+
+
+        <nav class="nav">
+
+            <a
+                href="index.html"
+                class="nav-link"
+            >
+                Home
+            </a>
+
+            <a
+                href="catalog.html"
+                class="nav-link"
+            >
+                Catalog
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            <a
+                href="cart.html"
+                class="cart-btn"
+            >
+                Cart
+
+                <span class="cart-count">
+                    0
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="checkout-page section">
+
+        <div class="container">
+
+            <div class="checkout-card">
+
+                <span class="section-label">
+                    CHECKOUT
+                </span>
+
+                <h1>
+                    Complete your order
+                </h1>
+
+                <p class="checkout-subtitle">
+                    Enter your shipping address.
+                </p>
+
+
+                <form id="checkout-form">
+
+                    <div class="form-group">
+
+                        <label for="shipping-address">
+                            Shipping address
+                        </label>
+
+                        <textarea
+                            id="shipping-address"
+                            rows="5"
+                            minlength="5"
+                            required
+                            placeholder="Baku, Nizami Street 10"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div
+                        id="checkout-error"
+                        class="form-error"
+                    ></div>
+
+
+                    <button
+                        type="submit"
+                        id="place-order"
+                        class="btn btn-primary checkout-submit"
+                    >
+                        Place order
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                NEXORA
+            </a>
+
+            <p>
+                Modern technology for modern life.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/header.js"></script>
+<script src="js/checkout.js"></script>
+
+</body>
+
+</html>
