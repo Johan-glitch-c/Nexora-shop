@@ -11,8 +11,18 @@ async function loadAccount() {
             "account-content"
         );
 
+    const ordersSection =
+        document.getElementById(
+            "orders-section"
+        );
+
 
     if (!isAuthenticated()) {
+
+        if (ordersSection) {
+            ordersSection.style.display = "none";
+        }
+
 
         container.innerHTML = `
             <div class="account-message">
@@ -43,6 +53,11 @@ async function loadAccount() {
 
         const user =
             await getCurrentUser();
+
+
+        if (ordersSection) {
+            ordersSection.style.display = "block";
+        }
 
 
         container.innerHTML = `
@@ -98,6 +113,7 @@ async function loadAccount() {
             <div class="account-actions">
 
                 <button
+                    type="button"
                     id="logout-button"
                     class="btn btn-secondary"
                 >
@@ -108,15 +124,36 @@ async function loadAccount() {
         `;
 
 
-        document
-            .getElementById("logout-button")
-            .addEventListener(
-                "click",
-                logout
+        const logoutButton =
+            document.getElementById(
+                "logout-button"
             );
 
 
+        if (logoutButton) {
+
+            logoutButton.addEventListener(
+                "click",
+                logout
+            );
+        }
+
+
+        await loadOrders();
+
+
     } catch (error) {
+
+        console.error(
+            "Account loading error:",
+            error
+        );
+
+
+        if (ordersSection) {
+            ordersSection.style.display = "none";
+        }
+
 
         container.innerHTML = `
             <div class="account-message">
@@ -144,13 +181,166 @@ async function loadAccount() {
 }
 
 
+async function loadOrders() {
+
+    const container =
+        document.getElementById(
+            "orders-content"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    try {
+
+        const orders =
+            await getUserOrders();
+
+
+        if (!orders || !orders.length) {
+
+            container.innerHTML = `
+                <div class="orders-empty">
+
+                    <h3>
+                        No orders yet
+                    </h3>
+
+                    <p>
+                        Your orders
+                        will appear here.
+                    </p>
+
+                    <a
+                        href="catalog.html"
+                        class="btn btn-primary"
+                    >
+                        Start shopping
+                    </a>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            orders
+                .map(
+                    order => renderOrder(order)
+                )
+                .join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "Orders loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="orders-empty">
+
+                <p>
+                    ${escapeHtml(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+        `;
+    }
+}
+
+
+function renderOrder(order) {
+
+    return `
+        <article class="order-history-card">
+
+            <div class="order-history-top">
+
+                <div>
+
+                    <span class="order-number">
+                        Order #${order.id}
+                    </span>
+
+                    <span class="order-date">
+                        ${formatDate(
+                            order.created_at
+                        )}
+                    </span>
+
+                </div>
+
+
+                <span class="order-status">
+                    ${escapeHtml(
+                        order.status
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="order-history-bottom">
+
+                <div>
+
+                    <span>
+                        Shipping address
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            order.shipping_address
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        $${Number(
+                            order.total_price
+                        ).toFixed(2)}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="order.html?id=${order.id}"
+                class="order-view-link"
+            >
+                View order →
+            </a>
+
+        </article>
+    `;
+}
+
+
 function formatDate(dateString) {
 
-    const date =
-        new Date(dateString);
-
-
-    return date.toLocaleDateString(
+    return new Date(
+        dateString
+    ).toLocaleDateString(
         "en-US",
         {
             year: "numeric",
@@ -164,9 +354,24 @@ function formatDate(dateString) {
 function escapeHtml(value) {
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }

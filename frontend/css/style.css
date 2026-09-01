@@ -1717,3 +1717,174 @@ select {
 
     cursor: pointer;
 }
+
+/* ORDER HISTORY */
+
+.orders-section {
+    margin-top: 60px;
+
+    padding-top: 40px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+.orders-heading h2 {
+    margin-top: 6px;
+
+    font-size: 32px;
+
+    letter-spacing: -0.03em;
+}
+
+
+.orders-content {
+    margin-top: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.order-history-card {
+    padding: 22px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface);
+}
+
+
+.order-history-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.order-history-top > div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.order-number {
+    font-weight: 800;
+}
+
+
+.order-date {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+.order-status {
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    background: var(--surface-light);
+
+    font-size: 13px;
+
+    text-transform: capitalize;
+}
+
+
+.order-history-bottom {
+    margin-top: 20px;
+
+    padding-top: 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto;
+
+    gap: 25px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+.order-history-bottom div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.order-history-bottom span {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+.order-history-bottom strong {
+    font-size: 14px;
+}
+
+
+.order-view-link {
+    display: inline-block;
+
+    margin-top: 20px;
+
+    color: var(--accent-light);
+
+    font-weight: 700;
+}
+
+
+.orders-empty {
+    padding: 45px 25px;
+
+    text-align: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface);
+}
+
+
+.orders-empty p {
+    margin: 10px 0 22px;
+
+    color: var(--muted);
+}
+
+
+@media (max-width: 600px) {
+
+    .order-history-top {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .order-history-bottom {
+        grid-template-columns: 1fr;
+    }
+
+}
