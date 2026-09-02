@@ -15,6 +15,7 @@ class UserResponseSchema(BaseModel):
     username: str = Field(..., description="User's username")
     email: EmailStr = Field(..., description="User's email")
     created_at: datetime = Field(..., description="User's created at")
+    role: str = Field(..., description="User's role")
     class Config:
         from_attributes = True
 

@@ -9,6 +9,7 @@ class User(Base):
     username = Column(String, unique=True)
     email = Column(String, unique=True)
     password_hash = Column(String, nullable=False)
+    role=Column(String, nullable=False, default='customer')
     created_at = Column(DateTime, default=datetime.now)
     cart=relationship("Cart", back_populates="user", uselist=False)
     orders = relationship("Order", back_populates="user")
