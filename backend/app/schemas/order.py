@@ -28,6 +28,7 @@ class OrderResponseSchema(BaseModel):
     user_id : int
     total_price : float
     created_at : datetime
+    status: str
     items : List[OrderItemResponseSchema]
 
     class Config:

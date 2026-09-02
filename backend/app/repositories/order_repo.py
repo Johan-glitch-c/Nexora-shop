@@ -19,7 +19,7 @@ class OrderRepository:
         return self.db.query(Order).filter(Order.user_id == user_id).all()
 
     def create(self,user_id: int, total_price:float , shipping_address:str, status:str) -> Order:
-        new_order = Order(total_price=total_price, user_id=user_id, shipping_address=shipping_address, status=status)
+        new_order = Order(total_price=total_price, user_id=user_id, shipping_address=shipping_address, status="pending")
         self.db.add(new_order)
         self.db.commit()
         self.db.refresh(new_order)
