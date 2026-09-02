@@ -229,11 +229,12 @@ async function loadOrders() {
 
 
         container.innerHTML =
-            orders
-                .map(
-                    order => renderOrder(order)
-                )
-                .join("");
+    orders
+        .map(
+            (order, index) =>
+                renderOrder(order, index + 1)
+        )
+        .join("");
 
 
     } catch (error) {
@@ -259,7 +260,7 @@ async function loadOrders() {
 }
 
 
-function renderOrder(order) {
+function renderOrder(order, orderNumber) {
 
     return `
         <article class="order-history-card">
@@ -269,7 +270,7 @@ function renderOrder(order) {
                 <div>
 
                     <span class="order-number">
-                        Order #${order.id}
+                        Order #${orderNumber}
                     </span>
 
                     <span class="order-date">
@@ -280,7 +281,6 @@ function renderOrder(order) {
 
                 </div>
 
-
                 <span class="order-status">
                     ${escapeHtml(
                         order.status
@@ -289,11 +289,9 @@ function renderOrder(order) {
 
             </div>
 
-
             <div class="order-history-bottom">
 
                 <div>
-
                     <span>
                         Shipping address
                     </span>
@@ -303,12 +301,9 @@ function renderOrder(order) {
                             order.shipping_address
                         )}
                     </strong>
-
                 </div>
 
-
                 <div>
-
                     <span>
                         Total
                     </span>
@@ -318,11 +313,9 @@ function renderOrder(order) {
                             order.total_price
                         ).toFixed(2)}
                     </strong>
-
                 </div>
 
             </div>
-
 
             <a
                 href="order.html?id=${order.id}"
