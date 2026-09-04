@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
-from .database import init_db
 from .routes.category_routes import router as category_router
 from .routes.product_routes import router as product_router
 from .routes.users_routes import router as users_router
@@ -46,9 +45,6 @@ app.include_router(cart_router)
 app.include_router(order_router)
 
 
-@app.on_event("startup")
-def startup():
-    init_db()
 
 
 @app.get("/")

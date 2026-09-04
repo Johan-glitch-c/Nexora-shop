@@ -5,7 +5,7 @@ from ..schemas.user import UserLoginSchema, UserResponseSchema, UserCreateSchema
 from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
-from ..security.auth import get_current_user
+from ..security.auth import get_current_user, require_admin
 
 
 router = APIRouter(
@@ -41,3 +41,14 @@ def get_user_by_username(username: str, db: Session = Depends(get_db)):
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.get_user_by_id(user_id)
+
+
+@router.get("/admin-test")
+def admin_test(
+    current_user: User = Depends(require_admin),
+):
+    return {
+        "message": "Welcome admin",
+        "username": current_user.username,
+        "role": current_user.role,
+    }
