@@ -43,3 +43,22 @@ class OrderService:
       self.cart_repo.clear_cart(cart.id)
       order=self.order_repo.get_by_id(order.id)
       return OrderResponseSchema.model_validate(order)
+
+    def get_all_orders(self) -> List[OrderResponseSchema]:
+        orders=self.order_repo.get_all_orders()
+        return [OrderResponseSchema.model_validate(order) for order in orders]
+
+    def get_order_by_id_admin(self, order_id: int) -> OrderResponseSchema:
+        order=self.order_repo.get_by_id(order_id)
+        if not order:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+        return OrderResponseSchema.model_validate(order)
+
+    def change_status(self, order_id: int, new_status: str) -> OrderResponseSchema:
+        allowed_status=["pending","shipped","cancelled", "confirmed","delivered"]
+        if new_status not in allowed_status:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please use allowed status")
+        order=self.order_repo.order_status(order_id, new_status)
+        if not order:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+        return OrderResponseSchema.model_validate(order)

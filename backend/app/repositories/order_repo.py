@@ -34,3 +34,12 @@ class OrderRepository:
 
     def get_items(self, order_id: int) -> List[OrderItem]:
         return self.db.query(OrderItem).filter(OrderItem.order_id == order_id).all()
+
+    def order_status(self,order_id : int, status: str) -> Optional[Order]:
+        order=self.db.query(Order).filter(Order.id == order_id,).first()
+        if not order:
+            return None
+        order.status=status
+        self.db.commit()
+        self.db.refresh(order)
+        return order
