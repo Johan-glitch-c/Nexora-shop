@@ -240,3 +240,51 @@ async function getOrder(orderId) {
         `/api/orders/${orderId}`
     );
 }
+
+
+// =========================
+// ADMIN PRODUCTS
+// =========================
+
+async function createProduct(productData) {
+
+    return apiRequest(
+        "/api/product/",
+        {
+            method: "POST",
+
+            body: JSON.stringify(
+                productData
+            ),
+        }
+    );
+}
+
+
+async function updateProduct(
+    productId,
+    productData
+) {
+
+    return apiRequest(
+        `/api/product/${productId}`,
+        {
+            method: "PUT",
+
+            body: JSON.stringify(
+                productData
+            ),
+        }
+    );
+}
+
+
+async function deleteProduct(productId) {
+
+    return apiRequest(
+        `/api/product/${productId}`,
+        {
+            method: "DELETE",
+        }
+    );
+}

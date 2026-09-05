@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nexora — Admin Products</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-container admin-header-inner">
+
+        <a
+            href="index.html"
+            class="admin-logo"
+        >
+            NEXORA
+            <span>ADMIN</span>
+        </a>
+
+        <div class="admin-header-actions">
+
+            <a
+                href="index.html"
+                class="admin-link"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="../index.html"
+                class="admin-link"
+            >
+                Store
+            </a>
+
+            <button
+                type="button"
+                id="logout-button"
+                class="admin-logout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="admin-main">
+
+    <div class="admin-container">
+
+        <section class="admin-page-header">
+
+            <div>
+
+                <span class="admin-label">
+                    MANAGEMENT
+                </span>
+
+                <h1>
+                    Products
+                </h1>
+
+                <p>
+                    Manage your store products.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="admin-primary-button"
+                id="add-product-button"
+            >
+                + Add product
+            </button>
+
+        </section>
+
+
+        <section class="admin-table-wrapper">
+
+            <div
+                id="products-list"
+                class="admin-products-list"
+            >
+
+                <div class="admin-loading">
+                    Loading products...
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- PRODUCT MODAL -->
+
+<div
+    id="product-modal"
+    class="admin-modal hidden"
+>
+
+    <div class="admin-modal-content">
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span
+                    id="modal-label"
+                    class="admin-label"
+                >
+                    NEW PRODUCT
+                </span>
+
+                <h2
+                    id="modal-title"
+                >
+                    Add product
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="close-modal"
+                class="admin-modal-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="product-form">
+
+            <input
+                type="hidden"
+                id="product-id"
+            >
+
+
+            <div class="admin-form-group">
+
+                <label for="product-name">
+                    Name
+                </label>
+
+                <input
+                    id="product-name"
+                    type="text"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label for="product-slug">
+                    Slug
+                </label>
+
+                <input
+                    id="product-slug"
+                    type="text"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label for="product-description">
+                    Description
+                </label>
+
+                <textarea
+                    id="product-description"
+                    rows="4"
+                ></textarea>
+
+            </div>
+
+
+            <div class="admin-form-row">
+
+                <div class="admin-form-group">
+
+                    <label for="product-price">
+                        Price
+                    </label>
+
+                    <input
+                        id="product-price"
+                        type="number"
+                        step="0.01"
+                        min="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="admin-form-group">
+
+                    <label for="product-category">
+                        Category ID
+                    </label>
+
+                    <input
+                        id="product-category"
+                        type="number"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label for="product-image">
+                    Image URL
+                </label>
+
+                <input
+                    id="product-image"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div
+                id="product-form-error"
+                class="admin-form-error"
+            ></div>
+
+
+            <div class="admin-modal-actions">
+
+                <button
+                    type="button"
+                    id="cancel-product"
+                    class="admin-secondary-button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="admin-primary-button"
+                    id="save-product"
+                >
+                    Save product
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="../js/auth.js"></script>
+<script src="../js/api.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/products.js"></script>
+
+
+<script>
+
+document
+    .getElementById("logout-button")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nexora — Admin</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-container admin-header-inner">
+
+        <a
+            href="index.html"
+            class="admin-logo"
+        >
+            NEXORA
+            <span>ADMIN</span>
+        </a>
+
+
+        <div class="admin-header-actions">
+
+            <a
+                href="../index.html"
+                class="admin-link"
+            >
+                View store
+            </a>
+
+            <button
+                type="button"
+                id="logout-button"
+                class="admin-logout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="admin-main">
+
+    <div class="admin-container">
+
+        <section class="admin-welcome">
+
+            <span class="admin-label">
+                DASHBOARD
+            </span>
+
+            <h1>
+                Admin Panel
+            </h1>
+
+            <p>
+                Manage your Nexora store.
+            </p>
+
+        </section>
+
+
+        <section class="admin-grid">
+
+            <a
+                href="products.html"
+                class="admin-card"
+            >
+
+                <div class="admin-card-icon">
+                    P
+                </div>
+
+                <div>
+
+                    <h2>
+                        Products
+                    </h2>
+
+                    <p>
+                        Create, edit and remove products.
+                    </p>
+
+                </div>
+
+                <span class="admin-card-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="admin-card"
+            >
+
+                <div class="admin-card-icon">
+                    C
+                </div>
+
+                <div>
+
+                    <h2>
+                        Categories
+                    </h2>
+
+                    <p>
+                        Manage product categories.
+                    </p>
+
+                </div>
+
+                <span class="admin-card-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a
+                href="orders.html"
+                class="admin-card"
+            >
+
+                <div class="admin-card-icon">
+                    O
+                </div>
+
+                <div>
+
+                    <h2>
+                        Orders
+                    </h2>
+
+                    <p>
+                        View orders and update their status.
+                    </p>
+
+                </div>
+
+                <span class="admin-card-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<script src="../js/auth.js"></script>
+<script src="../js/api.js"></script>
+<script src="js/admin.js"></script>
+
+
+<script>
+
+const logoutButton =
+    document.getElementById(
+        "logout-button"
+    );
+
+
+logoutButton.addEventListener(
+    "click",
+    logout
+);
+
+</script>
+
+</body>
+
+</html>
