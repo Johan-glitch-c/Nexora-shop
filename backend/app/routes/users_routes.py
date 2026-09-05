@@ -37,10 +37,6 @@ def get_user_by_username(username: str, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.get_user_by_username(username)
 
-@router.get("/{user_id}", response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
-def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
-    service = UserService(db)
-    return service.get_user_by_id(user_id)
 
 
 @router.get("/admin-test")
@@ -52,3 +48,11 @@ def admin_test(
         "username": current_user.username,
         "role": current_user.role,
     }
+
+
+@router.get("/{user_id}", response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    service = UserService(db)
+    return service.get_user_by_id(user_id)
+
+

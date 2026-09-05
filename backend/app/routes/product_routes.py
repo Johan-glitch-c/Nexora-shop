@@ -3,6 +3,8 @@ from ..services.product import ProductService
 from ..database import get_db
 from sqlalchemy.orm import Session
 from ..schemas.product import ProductUpdateSchema, ProductCreateSchema, ProductResponseSchema, ProductListResponseSchema
+from ..models.user import User
+from ..security.auth import require_admin
 
 router = APIRouter(prefix="/api/product",tags=["product"])
 
@@ -22,16 +24,16 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
     return service.get_product_by_id(product_id)
 
 @router.post("/",response_model=ProductResponseSchema, status_code=status.HTTP_201_CREATED)
-def create_product(product: ProductCreateSchema, db: Session = Depends(get_db)):
+def create_product(product: ProductCreateSchema,current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     service=ProductService(db)
     return service.create_product(product)
 
 @router.put("/{product_id}",response_model=ProductResponseSchema, status_code=status.HTTP_200_OK)
-def update_product(product_id: int, product_data: ProductUpdateSchema, db: Session = Depends(get_db)):
+def update_product(product_id: int, product_data: ProductUpdateSchema,current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     service=ProductService(db)
     return service.update_product(product_id, product_data)
 
 @router.delete("/{product_id}",status_code=status.HTTP_204_NO_CONTENT)
-def delete_product(product_id: int, db: Session = Depends(get_db)):
+def delete_product(product_id: int,current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     service=ProductService(db)
     service.delete_product(product_id)
