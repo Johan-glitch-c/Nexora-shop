@@ -33,3 +33,7 @@ class OrderResponseSchema(BaseModel):
 
     class Config:
         from_attributes=True
+
+
+class OrderStatusUpdateSchema(BaseModel):
+    status : str
