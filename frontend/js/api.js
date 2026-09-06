@@ -288,3 +288,46 @@ async function deleteProduct(productId) {
         }
     );
 }
+
+
+
+async function getCategory(categoryId) {
+    return apiRequest(
+        `/api/category/${categoryId}`
+    );
+}
+
+
+async function createCategory(categoryData) {
+    return apiRequest(
+        "/api/category/",
+        {
+            method: "POST",
+            body: JSON.stringify(categoryData)
+        }
+    );
+}
+
+
+async function updateCategory(
+    categoryId,
+    categoryData
+) {
+    return apiRequest(
+        `/api/category/${categoryId}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(categoryData)
+        }
+    );
+}
+
+
+async function deleteCategory(categoryId) {
+    return apiRequest(
+        `/api/category/${categoryId}`,
+        {
+            method: "DELETE"
+        }
+    );
+}

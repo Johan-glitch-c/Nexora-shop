@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Nexora — Admin Products</title>
+    <title>Nexora — Admin Categories</title>
 
     <link
         rel="stylesheet"
@@ -40,6 +40,13 @@
                 class="admin-link"
             >
                 Dashboard
+            </a>
+
+            <a
+                href="products.html"
+                class="admin-link"
+            >
+                Products
             </a>
 
             <a
@@ -77,11 +84,11 @@
                 </span>
 
                 <h1>
-                    Products
+                    Categories
                 </h1>
 
                 <p>
-                    Manage your store products.
+                    Manage your store categories.
                 </p>
 
             </div>
@@ -90,9 +97,9 @@
             <button
                 type="button"
                 class="admin-primary-button"
-                id="add-product-button"
+                id="add-category-button"
             >
-                + Add product
+                + Add category
             </button>
 
         </section>
@@ -101,12 +108,12 @@
         <section class="admin-table-wrapper">
 
             <div
-                id="products-list"
+                id="categories-list"
                 class="admin-products-list"
             >
 
                 <div class="admin-loading">
-                    Loading products...
+                    Loading categories...
                 </div>
 
             </div>
@@ -118,10 +125,10 @@
 </main>
 
 
-<!-- PRODUCT MODAL -->
+<!-- CATEGORY MODAL -->
 
 <div
-    id="product-modal"
+    id="category-modal"
     class="admin-modal hidden"
 >
 
@@ -135,13 +142,11 @@
                     id="modal-label"
                     class="admin-label"
                 >
-                    NEW PRODUCT
+                    NEW CATEGORY
                 </span>
 
-                <h2
-                    id="modal-title"
-                >
-                    Add product
+                <h2 id="modal-title">
+                    Add category
                 </h2>
 
             </div>
@@ -158,23 +163,25 @@
         </div>
 
 
-        <form id="product-form">
+        <form id="category-form">
 
             <input
                 type="hidden"
-                id="product-id"
+                id="category-id"
             >
 
 
             <div class="admin-form-group">
 
-                <label for="product-name">
+                <label for="category-name">
                     Name
                 </label>
 
                 <input
-                    id="product-name"
+                    id="category-name"
                     type="text"
+                    minlength="5"
+                    maxlength="100"
                     required
                 >
 
@@ -183,86 +190,23 @@
 
             <div class="admin-form-group">
 
-                <label for="product-slug">
+                <label for="category-slug">
                     Slug
                 </label>
 
                 <input
-                    id="product-slug"
+                    id="category-slug"
                     type="text"
+                    minlength="5"
+                    maxlength="100"
                     required
-                >
-
-            </div>
-
-
-            <div class="admin-form-group">
-
-                <label for="product-description">
-                    Description
-                </label>
-
-                <textarea
-                    id="product-description"
-                    rows="4"
-                ></textarea>
-
-            </div>
-
-
-            <div class="admin-form-row">
-
-                <div class="admin-form-group">
-
-                    <label for="product-price">
-                        Price
-                    </label>
-
-                    <input
-                        id="product-price"
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="admin-form-group">
-
-                    <label for="product-category">
-                        Category ID
-                    </label>
-
-                    <input
-                        id="product-category"
-                        type="number"
-                        min="0"
-                        required
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="admin-form-group">
-
-                <label for="product-image">
-                    Image URL
-                </label>
-
-                <input
-                    id="product-image"
-                    type="text"
                 >
 
             </div>
 
 
             <div
-                id="product-form-error"
+                id="category-form-error"
                 class="admin-form-error"
             ></div>
 
@@ -271,18 +215,18 @@
 
                 <button
                     type="button"
-                    id="cancel-product"
+                    id="cancel-category"
                     class="admin-secondary-button"
                 >
                     Cancel
                 </button>
 
+
                 <button
                     type="submit"
                     class="admin-primary-button"
-                    id="save-product"
                 >
-                    Save product
+                    Save category
                 </button>
 
             </div>
@@ -297,7 +241,7 @@
 <script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script src="js/admin.js"></script>
-<script src="js/products.js"></script>
+<script src="js/categories.js"></script>
 
 
 <script>
@@ -310,7 +254,6 @@ document
     );
 
 </script>
-
 
 </body>
 
