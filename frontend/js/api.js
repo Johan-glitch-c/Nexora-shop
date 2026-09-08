@@ -331,3 +331,39 @@ async function deleteCategory(categoryId) {
         }
     );
 }
+
+
+async function getAdminOrders() {
+
+    return apiRequest(
+        "/api/admin/orders/"
+    );
+
+}
+
+
+async function getAdminOrder(orderId) {
+
+    return apiRequest(
+        `/api/admin/orders/${orderId}`
+    );
+
+}
+
+
+async function updateAdminOrderStatus(
+    orderId,
+    status
+) {
+
+    return apiRequest(
+        `/api/admin/orders/${orderId}`,
+        {
+            method: "PUT",
+            body: JSON.stringify({
+                status: status
+            })
+        }
+    );
+
+}

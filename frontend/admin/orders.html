@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nexora — Admin Orders</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-container admin-header-inner">
+
+        <a
+            href="index.html"
+            class="admin-logo"
+        >
+            NEXORA
+            <span>ADMIN</span>
+        </a>
+
+        <div class="admin-header-actions">
+
+            <a
+                href="index.html"
+                class="admin-link"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="products.html"
+                class="admin-link"
+            >
+                Products
+            </a>
+
+            <a
+                href="categories.html"
+                class="admin-link"
+            >
+                Categories
+            </a>
+
+            <a
+                href="../index.html"
+                class="admin-link"
+            >
+                Store
+            </a>
+
+            <button
+                type="button"
+                id="logout-button"
+                class="admin-logout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="admin-main">
+
+    <div class="admin-container">
+
+        <section class="admin-page-header">
+
+            <div>
+
+                <span class="admin-label">
+                    MANAGEMENT
+                </span>
+
+                <h1>
+                    Orders
+                </h1>
+
+                <p>
+                    Manage customer orders.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-table-wrapper">
+
+            <div
+                id="orders-list"
+                class="admin-products-list"
+            >
+
+                <div class="admin-loading">
+                    Loading orders...
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ORDER MODAL -->
+
+<div
+    id="order-modal"
+    class="admin-modal hidden"
+>
+
+    <div class="admin-modal-content">
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <span
+                    class="admin-label"
+                    id="order-modal-label"
+                >
+                    ORDER
+                </span>
+
+                <h2 id="order-modal-title">
+                    Order details
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                id="close-order-modal"
+                class="admin-modal-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="order-details"
+        >
+        </div>
+
+
+        <div class="admin-form-group">
+
+            <label for="order-status">
+                Status
+            </label>
+
+            <select id="order-status">
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="confirmed">
+                    Confirmed
+                </option>
+
+                <option value="shipped">
+                    Shipped
+                </option>
+
+                <option value="delivered">
+                    Delivered
+                </option>
+
+                <option value="cancelled">
+                    Cancelled
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="order-form-error"
+            class="admin-form-error"
+        >
+        </div>
+
+
+        <div class="admin-modal-actions">
+
+            <button
+                type="button"
+                id="cancel-order"
+                class="admin-secondary-button"
+            >
+                Close
+            </button>
+
+            <button
+                type="button"
+                id="save-order-status"
+                class="admin-primary-button"
+            >
+                Update status
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="../js/auth.js"></script>
+<script src="../js/api.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/orders.js"></script>
+
+
+<script>
+
+document
+    .getElementById("logout-button")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+</script>
+
+
+</body>
+
+</html>
