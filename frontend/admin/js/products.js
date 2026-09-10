@@ -1,12 +1,24 @@
 console.log("PRODUCTS.JS LOADED");
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("PRODUCTS DOM LOADED");
 
-    initProductEvents();
-    loadProductsAdmin();
-});
+let productCategories = [];
 
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        console.log("PRODUCTS DOM LOADED");
+
+        initProductEvents();
+
+        await loadProductCategories();
+
+        await loadProductsAdmin();
+
+    }
+);
 
 /* =========================================================
    INITIALIZATION
@@ -56,6 +68,137 @@ function initProductEvents() {
             closeModal
         );
     }
+}
+
+
+/* =========================================================
+   LOAD CATEGORIES FOR PRODUCT FORM
+========================================================= */
+
+async function loadProductCategories() {
+
+    const select =
+        document.getElementById(
+            "product-category"
+        );
+
+
+    if (!select) {
+
+        console.error(
+            "PRODUCT CATEGORY SELECT NOT FOUND"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        console.log(
+            "LOADING PRODUCT CATEGORIES"
+        );
+
+
+        const response =
+            await getCategories();
+
+
+        console.log(
+            "PRODUCT CATEGORIES RESPONSE:",
+            response
+        );
+
+
+        const categories =
+            Array.isArray(response)
+                ? response
+                : response?.category
+                    ?? response?.categories
+                    ?? [];
+
+
+        if (!Array.isArray(categories)) {
+
+            throw new Error(
+                "Invalid categories response."
+            );
+
+        }
+
+
+        productCategories =
+            categories;
+
+
+        /*
+         * Keep placeholder.
+         */
+
+        select.innerHTML = `
+            <option
+                value=""
+                selected
+                disabled
+            >
+                Select category
+            </option>
+        `;
+
+
+        /*
+         * Add categories.
+         */
+
+        categories.forEach(category => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                String(category.id);
+
+
+            option.textContent =
+                category.name;
+
+
+            select.appendChild(
+                option
+            );
+
+        });
+
+
+        console.log(
+            "PRODUCT CATEGORIES LOADED:",
+            productCategories
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "LOAD PRODUCT CATEGORIES ERROR:",
+            error
+        );
+
+
+        select.innerHTML = `
+            <option
+                value=""
+                selected
+                disabled
+            >
+                Failed to load categories
+            </option>
+        `;
+
+    }
+
 }
 
 
@@ -323,13 +466,16 @@ function openCreateModal() {
             "product-form"
         );
 
+
     if (!form) {
+
         console.error(
             "PRODUCT FORM NOT FOUND"
         );
 
         return;
     }
+
 
     form.reset();
 
@@ -339,8 +485,24 @@ function openCreateModal() {
             "product-id"
         );
 
+
     if (productId) {
+
         productId.value = "";
+
+    }
+
+
+    const categorySelect =
+        document.getElementById(
+            "product-category"
+        );
+
+
+    if (categorySelect) {
+
+        categorySelect.value = "";
+
     }
 
 
@@ -349,9 +511,12 @@ function openCreateModal() {
             "modal-label"
         );
 
+
     if (modalLabel) {
+
         modalLabel.textContent =
             "NEW PRODUCT";
+
     }
 
 
@@ -360,9 +525,25 @@ function openCreateModal() {
             "modal-title"
         );
 
+
     if (modalTitle) {
+
         modalTitle.textContent =
             "Add product";
+
+    }
+
+
+    const errorElement =
+        document.getElementById(
+            "product-form-error"
+        );
+
+
+    if (errorElement) {
+
+        errorElement.textContent = "";
+
     }
 
 
@@ -371,11 +552,15 @@ function openCreateModal() {
             "product-modal"
         );
 
+
     if (modal) {
+
         modal.classList.remove(
             "hidden"
         );
+
     }
+
 }
 
 
@@ -476,7 +661,7 @@ async function editProduct(productId) {
 
         if (productCategory) {
             productCategory.value =
-                product.category_id ?? "";
+                String(product.category_id ?? "");
         }
 
 
@@ -590,7 +775,7 @@ async function saveProduct(event) {
     const categoryValue =
         document.getElementById(
             "product-category"
-        )?.value;
+        )?.value.trim();
 
 
     const imageUrl =
