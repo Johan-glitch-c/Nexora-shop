@@ -1,64 +1,166 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL =
+    "http://127.0.0.1:8000";
 
 
-async function apiRequest(endpoint, options = {}) {
+async function apiRequest(
+    endpoint,
+    options = {}
+) {
 
-    const token = getToken();
+    const token =
+        getToken();
+
 
     const headers = {
         "Content-Type": "application/json",
-        ...(options.headers || {}),
+        ...(options.headers || {})
     };
 
 
     if (token) {
-        headers["Authorization"] =
+
+        headers.Authorization =
             `Bearer ${token}`;
+
     }
 
 
-    const response = await fetch(
-        `${API_BASE_URL}${endpoint}`,
-        {
-            ...options,
-            headers,
-        }
-    );
+    let response;
 
+    try {
+
+        response =
+            await fetch(
+                `${API_BASE_URL}${endpoint}`,
+                {
+                    ...options,
+                    headers
+                }
+            );
+
+    } catch (error) {
+
+        console.error(
+            "NETWORK ERROR:",
+            error
+        );
+
+        throw new Error(
+            "Unable to connect to the server."
+        );
+
+    }
+
+
+    /*
+     * Unauthorized
+     */
+
+    if (response.status === 401) {
+
+        removeToken();
+
+        throw new Error(
+            "Your session has expired. Please login again."
+        );
+
+    }
+
+
+    /*
+     * No content
+     */
+
+    if (response.status === 204) {
+
+        return null;
+
+    }
+
+
+    /*
+     * Try to read JSON
+     */
+
+    let data = null;
+
+    try {
+
+        data =
+            await response.json();
+
+    } catch {
+
+        data = null;
+
+    }
+
+
+    /*
+     * HTTP error
+     */
 
     if (!response.ok) {
 
-        let errorMessage =
-            "Something went wrong";
+        console.error(
+            "API ERROR:",
+            response.status,
+            data
+        );
 
-        try {
 
-            const error =
-                await response.json();
+        let message =
+            "Something went wrong.";
 
-            errorMessage =
-                error.detail || errorMessage;
 
-        } catch {
-            // Response isn't JSON.
+        if (
+            data &&
+            typeof data.detail === "string"
+        ) {
+
+            message =
+                data.detail;
+
+        }
+
+        else if (
+            data &&
+            Array.isArray(data.detail)
+        ) {
+
+            message =
+                data.detail
+                    .map(error => {
+
+                        if (
+                            typeof error ===
+                            "string"
+                        ) {
+
+                            return error;
+
+                        }
+
+                        return (
+                            error.msg ||
+                            "Validation error."
+                        );
+
+                    })
+                    .join(", ");
+
         }
 
 
-        if (response.status === 401) {
-            removeToken();
-        }
+        throw new Error(
+            message
+        );
 
-
-        throw new Error(errorMessage);
     }
 
 
-    if (response.status === 204) {
-        return null;
-    }
+    return data;
 
-
-    return response.json();
 }
 
 
@@ -108,12 +210,10 @@ async function registerUser(userData) {
         "/api/users/",
         {
             method: "POST",
-
-            body: JSON.stringify(
-                userData
-            ),
+            body: JSON.stringify(userData)
         }
     );
+
 }
 
 

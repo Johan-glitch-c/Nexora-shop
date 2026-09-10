@@ -57,7 +57,7 @@
             </p>
 
 
-            <form id="register-form">
+           <form id="register-form">
 
                 <div class="form-group">
 
@@ -120,8 +120,6 @@
                 </button>
 
             </form>
-
-
             <p class="auth-switch">
 
                 Already have an account?
@@ -141,71 +139,7 @@
 
 <script src="js/auth.js"></script>
 <script src="js/api.js"></script>
-
-<script>
-
-const form =
-    document.getElementById(
-        "register-form"
-    );
-
-
-const errorElement =
-    document.getElementById(
-        "register-error"
-    );
-
-
-form.addEventListener(
-    "submit",
-    async (event) => {
-
-        event.preventDefault();
-
-
-        errorElement.textContent = "";
-
-
-        const username =
-            document.getElementById(
-                "username"
-            ).value.trim();
-
-
-        const email =
-            document.getElementById(
-                "email"
-            ).value.trim();
-
-
-        const password =
-            document.getElementById(
-                "password"
-            ).value;
-
-
-        try {
-
-            await registerUser({
-                username,
-                email,
-                password,
-            });
-
-
-            window.location.href =
-                "login.html";
-
-        } catch (error) {
-
-            errorElement.textContent =
-                error.message;
-        }
-
-    }
-);
-
-</script>
+<script src="js/register.js"></script>
 
 </body>
 
