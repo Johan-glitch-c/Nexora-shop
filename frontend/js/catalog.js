@@ -1,5 +1,15 @@
 let allProducts = [];
 
+let selectedCategory = "all";
+
+let searchQuery = "";
+
+let currentSort = "default";
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -9,25 +19,63 @@ document.addEventListener(
 
         await loadCatalogProducts();
 
+        setupSearch();
+
         setupSort();
+
     }
 );
 
 
+/* =========================================================
+   LOAD CATEGORIES
+========================================================= */
+
 async function loadCatalogCategories() {
 
     const container =
-        document.getElementById("category-filters");
+        document.getElementById(
+            "category-filters"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
 
 
     try {
 
-        const categories =
+        const response =
             await getCategories();
+
+
+        /*
+         * Support different API response shapes.
+         */
+
+        const categories =
+            Array.isArray(response)
+                ? response
+                : response?.category
+                    ?? response?.categories
+                    ?? [];
+
+
+        if (!Array.isArray(categories)) {
+
+            throw new Error(
+                "Invalid categories response."
+            );
+
+        }
 
 
         container.innerHTML = `
             <button
+                type="button"
                 class="filter-btn active"
                 data-category="all"
             >
@@ -42,8 +90,9 @@ async function loadCatalogCategories() {
                 "beforeend",
                 `
                 <button
+                    type="button"
                     class="filter-btn"
-                    data-category="${category.id}"
+                    data-category="${escapeHtml(category.id)}"
                 >
                     ${escapeHtml(category.name)}
                 </button>
@@ -60,37 +109,23 @@ async function loadCatalogCategories() {
                 button.addEventListener(
                     "click",
                     () => {
-                        selectCategory(button);
+
+                        selectCategory(
+                            button.dataset.category
+                        );
+
                     }
                 );
 
             });
 
 
-    } catch (error) {
-
-        container.innerHTML = `
-            <div class="loading">
-                ${escapeHtml(error.message)}
-            </div>
-        `;
-    }
-}
-
-
-async function loadCatalogProducts() {
-
-    try {
-
-        const response =
-            await getProducts();
-
-        allProducts =
-            response.products || [];
-
-
-        renderProducts(allProducts);
-
+        /*
+         * Check URL for category.
+         *
+         * Example:
+         * catalog.html?category=2
+         */
 
         const params =
             new URLSearchParams(
@@ -102,85 +137,398 @@ async function loadCatalogProducts() {
             params.get("category");
 
 
-        if (categoryId) {
+        if (categoryId !== null) {
 
             const button =
-                document.querySelector(
-                    `[data-category="${categoryId}"]`
+                container.querySelector(
+                    `[data-category="${CSS.escape(categoryId)}"]`
                 );
 
 
             if (button) {
-                await selectCategory(button);
-            }
-        }
 
+                selectCategory(
+                    categoryId
+                );
+
+            }
+
+        }
 
     } catch (error) {
 
-        document.getElementById(
-            "catalog-products"
-        ).innerHTML = `
-            <div class="loading">
-                ${escapeHtml(error.message)}
-            </div>
-        `;
-    }
-}
-
-
-async function selectCategory(button) {
-
-    const buttons =
-        document.querySelectorAll(
-            ".filter-btn"
+        console.error(
+            "LOAD CATEGORIES ERROR:",
+            error
         );
 
 
-    buttons.forEach(item => {
-        item.classList.remove("active");
-    });
+        container.innerHTML = `
+            <div class="loading">
+                ${escapeHtml(
+                    error?.message ||
+                    "Failed to load categories."
+                )}
+            </div>
+        `;
+
+    }
+
+}
 
 
-    button.classList.add("active");
+/* =========================================================
+   LOAD PRODUCTS
+========================================================= */
+
+async function loadCatalogProducts() {
+
+    const container =
+        document.getElementById(
+            "catalog-products"
+        );
 
 
-    const categoryId =
-        button.dataset.category;
+    if (!container) {
+
+        return;
+
+    }
 
 
     try {
 
-        if (categoryId === "all") {
+        const response =
+            await getProducts();
 
-            renderProducts(allProducts);
 
-            return;
+        console.log(
+            "CATALOG PRODUCTS RESPONSE:",
+            response
+        );
+
+
+        /*
+         * Your backend currently uses:
+         *
+         * {
+         *     product: [...],
+         *     total: ...
+         * }
+         *
+         * But we also support an array
+         * and `products`.
+         */
+
+        allProducts =
+            Array.isArray(response)
+                ? response
+                : response?.product
+                    ?? response?.products
+                    ?? [];
+
+
+        if (!Array.isArray(allProducts)) {
+
+            allProducts = [];
+
         }
 
 
-        const response =
-            await getProductsByCategory(
-                categoryId
-            );
-
-
-        renderProducts(
-            response.products || []
+        console.log(
+            "ALL PRODUCTS:",
+            allProducts
         );
+
+
+        renderCatalog();
 
     } catch (error) {
 
-        document.getElementById(
-            "catalog-products"
-        ).innerHTML = `
+        console.error(
+            "LOAD PRODUCTS ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
             <div class="loading">
-                ${escapeHtml(error.message)}
+                ${escapeHtml(
+                    error?.message ||
+                    "Failed to load products."
+                )}
             </div>
         `;
+
     }
+
 }
 
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function selectCategory(categoryId) {
+
+    selectedCategory =
+        String(categoryId);
+
+
+    document
+        .querySelectorAll(
+            ".filter-btn"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.category ===
+                selectedCategory
+            );
+
+        });
+
+
+    /*
+     * Update URL.
+     */
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+
+    if (
+        selectedCategory === "all"
+    ) {
+
+        url.searchParams.delete(
+            "category"
+        );
+
+    } else {
+
+        url.searchParams.set(
+            "category",
+            selectedCategory
+        );
+
+    }
+
+
+    window.history.replaceState(
+        {},
+        "",
+        url
+    );
+
+
+    renderCatalog();
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function setupSearch() {
+
+    const searchInput =
+        document.getElementById(
+            "catalog-search"
+        );
+
+
+    if (!searchInput) {
+
+        return;
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        event => {
+
+            searchQuery =
+                event.target.value
+                    .trim()
+                    .toLowerCase();
+
+
+            renderCatalog();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+function setupSort() {
+
+    const select =
+        document.getElementById(
+            "sort-products"
+        );
+
+
+    if (!select) {
+
+        return;
+
+    }
+
+
+    select.addEventListener(
+        "change",
+        event => {
+
+            currentSort =
+                event.target.value;
+
+
+            renderCatalog();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FILTER + SEARCH + SORT
+========================================================= */
+
+function getFilteredProducts() {
+
+    let products =
+        [...allProducts];
+
+
+    /*
+     * Category filter
+     */
+
+    if (
+        selectedCategory !== "all"
+    ) {
+
+        products =
+            products.filter(
+                product =>
+                    String(
+                        product.category_id
+                    ) ===
+                    String(
+                        selectedCategory
+                    )
+            );
+
+    }
+
+
+    /*
+     * Search
+     */
+
+    if (searchQuery) {
+
+        products =
+            products.filter(
+                product => {
+
+                    const name =
+                        String(
+                            product.name || ""
+                        ).toLowerCase();
+
+
+                    const description =
+                        String(
+                            product.description || ""
+                        ).toLowerCase();
+
+
+                    const slug =
+                        String(
+                            product.slug || ""
+                        ).toLowerCase();
+
+
+                    return (
+                        name.includes(searchQuery) ||
+                        description.includes(searchQuery) ||
+                        slug.includes(searchQuery)
+                    );
+
+                }
+            );
+
+    }
+
+
+    /*
+     * Sort
+     */
+
+    switch (currentSort) {
+
+        case "price-asc":
+
+            products.sort(
+                (a, b) =>
+                    Number(a.price) -
+                    Number(b.price)
+            );
+
+            break;
+
+
+        case "price-desc":
+
+            products.sort(
+                (a, b) =>
+                    Number(b.price) -
+                    Number(a.price)
+            );
+
+            break;
+
+    }
+
+
+    return products;
+
+}
+
+
+/* =========================================================
+   RENDER CATALOG
+========================================================= */
+
+function renderCatalog() {
+
+    const products =
+        getFilteredProducts();
+
+
+    renderProducts(
+        products
+    );
+
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
 
 function renderProducts(products) {
 
@@ -196,8 +544,23 @@ function renderProducts(products) {
         );
 
 
-    count.textContent =
-        `${products.length} products`;
+    if (!container) {
+
+        return;
+
+    }
+
+
+    if (count) {
+
+        count.textContent =
+            `${products.length} ${
+                products.length === 1
+                    ? "product"
+                    : "products"
+            }`;
+
+    }
 
 
     if (!products.length) {
@@ -209,73 +572,116 @@ function renderProducts(products) {
         `;
 
         return;
+
     }
 
 
     container.innerHTML =
         products
-            .map(renderProductCard)
+            .map(
+                renderProductCard
+            )
             .join("");
+
 }
 
 
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
 function renderProductCard(product) {
 
-    const image = product.image_url
-        ? `
-            <img
-                src="${API_BASE_URL}${product.image_url}"
-                alt="${escapeHtml(
-                    product.name
-                )}"
-            >
-        `
-        : `
-            <span class="product-placeholder">
-                N
-            </span>
-        `;
+    const image =
+        getProductImageUrl(
+            product.image_url
+        );
+
+
+    const categoryName =
+        product.category?.name ||
+        "Uncategorized";
 
 
     return `
-        <article class="product-card">
+        <article
+            class="product-card"
+            data-id="${escapeHtml(product.id)}"
+        >
 
             <div class="product-image">
-                ${image}
+
+                ${
+                    image
+                        ? `
+                            <img
+                                src="${escapeHtml(image)}"
+                                alt="${escapeHtml(
+                                    product.name ||
+                                    "Product"
+                                )}"
+                            >
+                        `
+                        : `
+                            <span class="product-placeholder">
+                                N
+                            </span>
+                        `
+                }
+
             </div>
+
 
             <div class="product-info">
 
                 <span class="product-category">
+
                     ${escapeHtml(
-                        product.category.name
+                        categoryName
                     )}
+
                 </span>
 
+
                 <h3 class="product-name">
-                    ${escapeHtml(product.name)}
+
+                    ${escapeHtml(
+                        product.name ||
+                        "Unnamed product"
+                    )}
+
                 </h3>
 
+
                 <p class="product-description">
+
                     ${escapeHtml(
-                        product.description || ""
+                        product.description ||
+                        ""
                     )}
+
                 </p>
+
 
                 <div class="product-bottom">
 
                     <span class="product-price">
-                        $${Number(
+
+                        $${formatPrice(
                             product.price
-                        ).toFixed(2)}
+                        )}
+
                     </span>
 
-<a
-    href="product.html?id=${product.id}"
-    class="product-link"
->
-    View
-</a>
+
+                    <a
+                        href="product.html?id=${encodeURIComponent(
+                            product.id
+                        )}"
+                        class="product-link"
+                    >
+                        View
+                    </a>
 
                 </div>
 
@@ -283,61 +689,88 @@ function renderProductCard(product) {
 
         </article>
     `;
+
 }
 
 
-function setupSort() {
+/* =========================================================
+   IMAGE URL
+========================================================= */
 
-    const select =
-        document.getElementById(
-            "sort-products"
-        );
+function getProductImageUrl(imageUrl) {
 
+    if (!imageUrl) {
 
-    select.addEventListener(
-        "change",
-        () => {
+        return null;
 
-            let products =
-                [...allProducts];
+    }
 
 
-            switch (select.value) {
+    if (
+        imageUrl.startsWith("http://") ||
+        imageUrl.startsWith("https://")
+    ) {
 
-                case "price-asc":
+        return imageUrl;
 
-                    products.sort(
-                        (a, b) =>
-                            a.price - b.price
-                    );
-
-                    break;
+    }
 
 
-                case "price-desc":
+    return `${API_BASE_URL}${imageUrl}`;
 
-                    products.sort(
-                        (a, b) =>
-                            b.price - a.price
-                    );
-
-                    break;
-
-            }
-
-
-            renderProducts(products);
-        }
-    );
 }
 
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+function formatPrice(price) {
+
+    const number =
+        Number(price);
+
+
+    if (!Number.isFinite(number)) {
+
+        return "0.00";
+
+    }
+
+
+    return number.toFixed(2);
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHtml(value) {
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
 }

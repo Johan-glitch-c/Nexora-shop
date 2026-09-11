@@ -102,27 +102,43 @@
 
                 <div class="catalog-toolbar">
 
-                    <div>
-                        <span id="products-count">
-                            0 products
-                        </span>
-                    </div>
+    <div class="catalog-search">
 
-                    <select id="sort-products">
-                        <option value="default">
-                            Sort by
-                        </option>
+        <input
+            type="search"
+            id="catalog-search"
+            placeholder="Search products..."
+            autocomplete="off"
+        >
 
-                        <option value="price-asc">
-                            Price: low to high
-                        </option>
+    </div>
 
-                        <option value="price-desc">
-                            Price: high to low
-                        </option>
-                    </select>
 
-                </div>
+    <div class="catalog-sort">
+
+        <span id="products-count">
+            0 products
+        </span>
+
+        <select id="sort-products">
+
+            <option value="default">
+                Sort by
+            </option>
+
+            <option value="price-asc">
+                Price: low to high
+            </option>
+
+            <option value="price-desc">
+                Price: high to low
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
 
 
                 <div
